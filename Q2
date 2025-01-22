@@ -15,10 +15,8 @@ Dictionary<String,Flight> ReadFligh()
             if (tempdata == null) { break; }
             string[] Objdata = tempdata.Split(",");
             Flight FlightObj = new Flight(Objdata[0], Objdata[1], Objdata[2], Convert.ToDateTime(Objdata[3]), Objdata[4]);
-            flighdict.Add(Objdata[0],FlightObj);
+            flighdict[Objdata[0]] = FlightObj;
         }
     }
     return flighdict;
 }
-
-Dictionary<String,Flight> flighdict = ReadFligh();
