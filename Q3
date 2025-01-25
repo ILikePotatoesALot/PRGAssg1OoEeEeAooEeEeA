@@ -10,6 +10,7 @@ void AllFlightBasicInfo(Dictionary<String,Flight> flighdict,Dictionary<string,Ai
         {
             if (ad.Value.Code == flightcode) { AirlineName = ad.Key; break; }
         }
+        Console.WriteLine("---------------------------------------------------------------");
         Console.WriteLine($"Flight Number: {kv.Value.FlightNumber,-10}");
         Console.WriteLine($"Airline Name: {AirlineName,-10} ");
         Console.WriteLine($"Origin:  {kv.Value.Origin,-10} ");
