@@ -26,14 +26,9 @@ namespace AssgCode
         }
         public double CalculateFees()
         {
-            /*
-            if (SupportsCFFT == true) { fee += 150; }
-            if (SupportsDDJB == true) { fee += 300; }
-            if (SupportsLWTT == true) {fee += 500; }
-            
-            return fee;
-            */
-
+            double fees = 300;
+            return fees;
+        
         }
         
         public override string ToString()
