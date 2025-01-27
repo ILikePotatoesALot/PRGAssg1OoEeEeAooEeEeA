@@ -17,9 +17,6 @@ void AllFlightBasicInfo(Dictionary<String,Flight> flighdict,Dictionary<string,Ai
         }
         if (String.IsNullOrWhiteSpace(kv.Value.Status) == false)
         { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-40}{kv.Value.Status,-10}"); }
-        else { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-40}{"Nil",-10}"); }
+        else { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-40}{"None",-10}"); }
     }     
 }
-
-AllFlightBasicInfo(flighdict, airlinesDictionary);
-
