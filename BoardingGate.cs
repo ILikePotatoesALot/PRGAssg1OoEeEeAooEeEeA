@@ -22,7 +22,7 @@ namespace AssgCode
             SupportsCFFT = supportsCFFT;
             SupportsDDJB = supportsDDJB;
             SupportsLWTT = supportsLWTT;
-            Flightt = Null;
+            Flightt = null;
         }
         public double CalculateFees()
         {
