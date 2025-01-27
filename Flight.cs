@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +15,15 @@ namespace AssgCode
         public DateTime ExpectedTime { get; set; }
         public string Status { get; set; }
 
-        public Flight() { }
+        public Flight(string flightNumber, string origin, string destination, DateTime expectedTime)
+        {
+            FlightNumber = flightNumber;
+            Origin = origin;
+            Destination = destination;
+            ExpectedTime = expectedTime;
+            Status = "On Time";
+        }
+
 
         public Flight(string flightNumber, string origin, string destination, DateTime expectedTime, string status)
         {
