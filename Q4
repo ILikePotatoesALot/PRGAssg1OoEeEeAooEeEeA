@@ -1,0 +1,15 @@
+//==========================================================
+//Student Number : S10265753
+//Student Name : Seth Lee
+//Partner Name : Austin Goh
+//==========================================================
+
+void DisplayBG()
+{
+    Console.WriteLine($"{"Gate Name",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
+    foreach(string bg in boardinggateDictionary.Keys)
+    {
+        BoardingGate i = boardinggateDictionary[bg];
+        Console.WriteLine($"{i.GateName,-15}{i.SupportsDDJB,-20}{i.SupportsCFFT,-20}{i.SupportsLWTT,-20}");
+    }
+}
