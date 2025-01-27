@@ -1,4 +1,4 @@
-﻿using AssgCode;
+using AssgCode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,8 @@ namespace AssgCode
 {
     class NORMFlight : Flight
     {
+        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime) : base(flightNumber, origin, destination, expectedTime)
+        { }
         public override double CalculateFees()
         {
             return base.CalculateFees();
