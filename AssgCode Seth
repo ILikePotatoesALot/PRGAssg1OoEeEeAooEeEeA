@@ -258,8 +258,19 @@ void AssignFlighStatus(Dictionary<String, Flight> flighdict, string Flighnum, Di
     }
     Console.WriteLine($"Flight {Flighnum} has been assigned to Gate {BoardinGate}");
 }
-
-
+/*
+string Flighnum = "";
+while (true)
+{
+    Console.WriteLine("Enter Flight Number: ");
+    Flighnum = Console.ReadLine();
+    if (checkflighnum(flighdict, Flighnum) == true) { break; }
+    else { continue; }
+}
+OneFlightInfo(flighdict, airlinesDictionary, Flighnum);
+string boardinNum = AssignFligh2BoardG(flighdict, boardinggateDictionary, Flighnum);
+AssignFlighStatus(flighdict, Flighnum, boardinggateDictionary, boardinNum);
+*/
 
 
 
