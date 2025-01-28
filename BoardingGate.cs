@@ -1,14 +1,15 @@
-
 namespace AssgCode
 {
-    internal class BoardingGate
+    internal class BoardingGate 
     {
         public string GateName { get; set; }
 
         public bool SupportsCFFT { get; set; }
         public bool SupportsDDJB { get; set; }
         public bool SupportsLWTT { get; set; }
-        public Flight Flightt { get; set; }
+        public Flight Flights { get; set; } 
+
+
 
         public BoardingGate(string gateName, bool supportsCFFT,
             bool supportsDDJB, bool supportsLWTT)
@@ -16,10 +17,11 @@ namespace AssgCode
             GateName = gateName;
             SupportsCFFT = supportsCFFT;
             SupportsDDJB = supportsDDJB;
-            SupportsLWTT = supportsLWTT;
-            Flightt = null;
+            SupportsLWTT = supportsLWTT;  
 
         }
+
+        
         /*public double CalculateFees()
         {
             
@@ -40,6 +42,9 @@ namespace AssgCode
                 $"SupportsLWTT: {SupportsLWTT,-10}";
         }
 
+
+    }
+}
 
     }
 }
