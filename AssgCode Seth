@@ -94,7 +94,7 @@ void AllFlightBasicInfo(Dictionary<String, Flight> flighdict, Dictionary<string,
     Console.WriteLine("=============================================");
     Console.WriteLine("List of Flights for Changi Airport Terminal 5");
     Console.WriteLine("=============================================");
-    Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination Departure/Arrival Time",-40}{"Special Request Code:",-10}");
+    Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination Departure/Arrival Time",-40}{"Status:",-10}");
     foreach (KeyValuePair<String, Flight> kv in flighdict)
     {
 
