@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AssgCode
 {
-    internal class Airline : Terminal
+    internal class Airline
     {
         public string Name { get; set; }
         public string Code { get; set; }
