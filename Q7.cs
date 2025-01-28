@@ -1,9 +1,4 @@
 //7
-//==========================================================
-//Student Number : S10265753
-//Student Name : Seth Lee
-//Partner Name : Austin Goh
-//==========================================================
 // Display the list of airlines
 
 void DisplayAirlines()
