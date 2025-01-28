@@ -22,7 +22,7 @@ using (StreamReader sr = new StreamReader("airlines.csv"))
         string[] columns = line.Split(",");
 
         Airline airline = new Airline(columns[0], columns[1]);
-        airlinesDictionary[columns[0]] = airline;
+        airlinesDictionary[columns[1]] = airline;
     }
 }
 
