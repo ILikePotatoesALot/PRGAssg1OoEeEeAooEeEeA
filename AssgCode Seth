@@ -94,7 +94,7 @@ void AllFlightBasicInfo(Dictionary<String, Flight> flighdict, Dictionary<string,
     Console.WriteLine("=============================================");
     Console.WriteLine("List of Flights for Changi Airport Terminal 5");
     Console.WriteLine("=============================================");
-    Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination Departure/Arrival Time",-40}{"Status:",-10}");
+    Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination",-23}{"Expected Departure/Arrival Time",-40}{"Status:",-10}");
     foreach (KeyValuePair<String, Flight> kv in flighdict)
     {
 
@@ -105,8 +105,8 @@ void AllFlightBasicInfo(Dictionary<String, Flight> flighdict, Dictionary<string,
             if (ad.Value.Code == flightcode) { AirlineName = ad.Key; break; }
         }
         if (String.IsNullOrWhiteSpace(kv.Value.Status) == false)
-        { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-40}{kv.Value.Status,-10}"); }
-        else { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-40}{"None",-10}"); }
+        { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-23}{kv.Value.ExpectedTime,-40}{kv.Value.Status,-10}"); }
+        else { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-23}{kv.Value.ExpectedTime,-40}{"None",-10}"); }
     }
 }
 
