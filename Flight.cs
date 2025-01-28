@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AssgCode
 {
-    internal class Flight : Airline
+    internal class Flight 
     {
         public string FlightNumber { get; set; }
         public string Origin {  get; set; }
