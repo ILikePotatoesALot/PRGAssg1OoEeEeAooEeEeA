@@ -14,11 +14,14 @@ namespace AssgCode
         public Dictionary<string, BoardingGate> BoardingGates { get; set; } = new Dictionary<string, BoardingGate>();
         public Dictionary<string, double> GateFees { get; set; } = new Dictionary<string, double>();
 
-        public Terminal() {; }
-        public Terminal(string terminalName)
+        public Terminal(string terminalName,Dictionary<string,Airline> airlines, Dictionary<string, Flight> flights, Dictionary<string, BoardingGate> boardingGates)
         {
             TerminalName = terminalName;
+            Airlines = airlines;
+            Flights = flights;
+            BoardingGates = boardingGates;
         }
+
 
         public bool AddAirline(Airline airline)
         {
@@ -64,13 +67,14 @@ namespace AssgCode
         /*
         public void PrintAirlineFees()
         {
-
+            
         }
+        
         */
-
         public virtual string ToString()
         {
             return $"terminal name: {TerminalName}  gateFees: {GateFees} ";
         }
     }
 }
+
