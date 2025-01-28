@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace AssgCode
 {
-    internal class Flight 
+namespace AssgCode
+{
+    internal class Flight : IComparable<Flight>
     {
         public string FlightNumber { get; set; }
-        public string Origin {  get; set; }
+        public string Origin { get; set; }
         public string Destination { get; set; }
         public DateTime ExpectedTime { get; set; }
         public string Status { get; set; }
@@ -33,7 +35,7 @@ namespace AssgCode
             ExpectedTime = expectedTime;
             Status = status;
         }
-        
+
         public virtual double CalculateFees()
         {
             double fee = 300;
@@ -41,7 +43,7 @@ namespace AssgCode
             if (Origin == "Singapore (SIN)") { fee += 800; }
             return fee;
         }
-        
+
         public virtual string ToString()
         {
             return $"Flight Number: {FlightNumber,-10}" +
@@ -51,6 +53,12 @@ namespace AssgCode
                 $"Status: {Status,-10}";
         }
 
+        public int CompareTo(Flight other)
+        {
+            if (other == null)
+                return 1;
 
+            return this.ExpectedTime.CompareTo(other.ExpectedTime);
+        }
     }
 }
