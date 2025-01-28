@@ -1,3 +1,5 @@
+//Q6
+
 void CreateNewFlight(Dictionary<String, Flight> flighdict, Dictionary<string, Airline> airlinesDictionary)
 {
     while (true)
