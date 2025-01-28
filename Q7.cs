@@ -5,6 +5,7 @@
 //Partner Name : Austin Goh
 //==========================================================
 // Display the list of airlines
+
 void DisplayAirlines()
 {
     Console.WriteLine("=============================================");
@@ -70,4 +71,5 @@ void FullFlightDetails()
             Console.WriteLine($"{flight.FlightNumber,-16}{airlineName,-23}{flight.Origin,-23}{flight.Destination,-23}{flight.ExpectedTime,-25}{status}");
         }
     }
-}
+} //shld rename this to fullairlinedetails
+
