@@ -59,25 +59,31 @@ Dictionary<String, Flight> ReadFligh()
             string tempdata = sr.ReadLine();
             if (tempdata == null) { break; }
             string[] Objdata = tempdata.Split(",");
+            string aircode = Objdata[0].Substring(0, 2);
+            Airline airline = airlinesDictionary[aircode];
             if (Objdata[4] == "CFFT")
             {
                 CFFTFlight flightt = new CFFTFlight(Objdata[0], Objdata[1], Objdata[2], Convert.ToDateTime(Objdata[3]));
                 flighdict[Objdata[0]] = flightt;
+                airline.Flights[Objdata[0]] = flightt;
             }
             if (Objdata[4] == "DDJB")
             {
                 DDJBFlight flightt = new DDJBFlight(Objdata[0], Objdata[1], Objdata[2], Convert.ToDateTime(Objdata[3]));
                 flighdict[Objdata[0]] = flightt;
+                airline.Flights[Objdata[0]] = flightt;
             }
             if (Objdata[4] == "LWTT")
             {
                 LWTTFlight flightt = new LWTTFlight(Objdata[0], Objdata[1], Objdata[2], Convert.ToDateTime(Objdata[3]));
                 flighdict[Objdata[0]] = flightt;
+                airline.Flights[Objdata[0]] = flightt;
             }
             if (Objdata[4] == "")
             {
                 NORMFlight flightt = new NORMFlight(Objdata[0], Objdata[1], Objdata[2], Convert.ToDateTime(Objdata[3]));
                 flighdict[Objdata[0]] = flightt;
+                airline.Flights[Objdata[0]] = flightt;
             }
 
         }
@@ -85,7 +91,7 @@ Dictionary<String, Flight> ReadFligh()
 return flighdict;
 }
 Dictionary<String, Flight> flighdict = ReadFligh();
-
+Terminal T5 = new Terminal("Terminal 5", airlinesDictionary, flighdict, boardinggateDictionary);
 
 //3 List all Flights with their basic info
 
@@ -94,22 +100,22 @@ void AllFlightBasicInfo(Dictionary<String, Flight> flighdict, Dictionary<string,
     Console.WriteLine("=============================================");
     Console.WriteLine("List of Flights for Changi Airport Terminal 5");
     Console.WriteLine("=============================================");
-    Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination",-23}{"Expected Departure/Arrival Time",-40}{"Status:",-10}");
-    List<Flight> Sortlis = new List<Flight>(flighdict.Values);
-    Sortlis.Sort();
-    foreach (Flight kv in Sortlis)
+    Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination Departure/Arrival Time",-40}{"Special Request Code:",-10}");
+    foreach (KeyValuePair<String, Flight> kv in flighdict)
     {
+
         string AirlineName = "";
-        string flightcode = kv.FlightNumber.Substring(0, 2);
+        string flightcode = kv.Value.FlightNumber.Substring(0, 2);
         foreach (KeyValuePair<String, Airline> ad in airlinesDictionary)
         {
             if (ad.Value.Code == flightcode) { AirlineName = ad.Key; break; }
         }
-        if (String.IsNullOrWhiteSpace(kv.Status) == false)
-        { Console.WriteLine($"{kv.FlightNumber,-16}{AirlineName,-23}{kv.Origin,-23}{kv.Destination,-23}{kv.ExpectedTime,-40}{kv.Status,-10}"); }
-        else { Console.WriteLine($"{kv.FlightNumber,-16}{AirlineName,-23}{kv.Origin,-23}{kv.Destination,-23}{kv.ExpectedTime,-40}{"None",-10}"); }
+        if (String.IsNullOrWhiteSpace(kv.Value.Status) == false)
+        { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-40}{kv.Value.Status,-10}"); }
+        else { Console.WriteLine($"{kv.Value.FlightNumber,-16}{AirlineName,-23}{kv.Value.Origin,-23}{kv.Value.Destination,-40}{"None",-10}"); }
     }
 }
+
 //4 
 void DisplayBG()
 {
@@ -258,19 +264,8 @@ void AssignFlighStatus(Dictionary<String, Flight> flighdict, string Flighnum, Di
     }
     Console.WriteLine($"Flight {Flighnum} has been assigned to Gate {BoardinGate}");
 }
-/*
-string Flighnum = "";
-while (true)
-{
-    Console.WriteLine("Enter Flight Number: ");
-    Flighnum = Console.ReadLine();
-    if (checkflighnum(flighdict, Flighnum) == true) { break; }
-    else { continue; }
-}
-OneFlightInfo(flighdict, airlinesDictionary, Flighnum);
-string boardinNum = AssignFligh2BoardG(flighdict, boardinggateDictionary, Flighnum);
-AssignFlighStatus(flighdict, Flighnum, boardinggateDictionary, boardinNum);
-*/
+
+
 
 
 
