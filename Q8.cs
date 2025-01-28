@@ -3,6 +3,8 @@
 
 
 
+
+
 void ModifyBI(string i)
 {
     Console.Write("Enter new Origin: ");
@@ -33,7 +35,7 @@ void ModifySRC(string i)
     Console.Write("Enter new Special Request Code: ");
     string src = Console.ReadLine();
     Flight fl = flighdict[i];
-    
+
     if (src == "CFFT")
     {
         CFFTFlight flightt = new CFFTFlight(fl.FlightNumber, fl.Origin, fl.Destination, Convert.ToDateTime(fl.ExpectedTime));
@@ -65,16 +67,16 @@ void ModifyBG(string i)
     foreach (string f in boardinggateDictionary.Keys)
     {
         BoardingGate bg = boardinggateDictionary[f];
-        if (bg.Flightt == fl)
+        if (bg.Flights == fl)
         {
-            bg.Flightt = null;
-            break; 
+            bg.Flights = null;
+            break;
         }
     }
     Console.Write("Enter Boarding Gate Number: ");
     string board = Console.ReadLine();
     BoardingGate bgg = boardinggateDictionary[board];
-    bgg.Flightt = fl;
+    bgg.Flights = fl;
 }
 
 void Modify(string i)
@@ -97,7 +99,7 @@ void Modify(string i)
     {
         ModifySRC(i);
     }
-    else if (choice == "4") 
+    else if (choice == "4")
     {
         ModifyBG(i);
     }
@@ -126,6 +128,9 @@ void ModifyFlight()
         {
             flighdict.Remove(i);
         }
+
+    }
+}
 
     }
 }
