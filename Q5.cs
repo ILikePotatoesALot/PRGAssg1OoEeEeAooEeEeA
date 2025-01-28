@@ -1,17 +1,18 @@
 //5 Austin
-bool checkflighnum(Dictionary<String, Flight> flighdict,string FlightNumber)
+
+bool checkflighnum(Dictionary<String, Flight> flighdict, string FlightNumber)
 {
     if (flighdict.ContainsKey(FlightNumber)) { return true; }
-    else { Console.WriteLine("Flight Number Not Found. ");  return false; }
+    else { Console.WriteLine("Flight Number Not Found. "); return false; }
 }
 
-bool checkBoardinGate(Dictionary<String,BoardingGate> boardinggatedictionary, string BoardingGate)
+bool checkBoardinGate(Dictionary<String, BoardingGate> boardinggatedictionary, string BoardingGate)
 {
     if (boardinggateDictionary.ContainsKey(BoardingGate)) { return true; }
     else { Console.WriteLine("Boarding Gate Not Found. "); return false; }
 }
 
-void OneFlightInfo(Dictionary<String, Flight> flighdict, Dictionary<string, Airline> airlinesDictionary,string FlightNumber)
+void OneFlightInfo(Dictionary<String, Flight> flighdict, Dictionary<string, Airline> airlinesDictionary, string FlightNumber)
 {
     foreach (KeyValuePair<String, Flight> kv in flighdict)
     {
@@ -36,11 +37,9 @@ void OneFlightInfo(Dictionary<String, Flight> flighdict, Dictionary<string, Airl
     }
 }
 
-
-
-void OneBoardinGateInfo(Dictionary<String,BoardingGate> boardingGateDict, string BoardingGate)
+void OneBoardinGateInfo(Dictionary<String, BoardingGate> boardingGateDict, string BoardingGate)
 {
-    foreach (KeyValuePair<String,BoardingGate> kv in  boardingGateDict)
+    foreach (KeyValuePair<String, BoardingGate> kv in boardingGateDict)
     {
         if (kv.Key.Equals(BoardingGate))
         {
@@ -52,7 +51,6 @@ void OneBoardinGateInfo(Dictionary<String,BoardingGate> boardingGateDict, string
         }
     }
 }
-
 
 string BGInput()
 {
@@ -77,14 +75,14 @@ string AssignFligh2BoardG(Dictionary<String, Flight> flighdict, Dictionary<strin
         OneBoardinGateInfo(boardinggateDictionary, BoardinGate);
         foreach (KeyValuePair<String, BoardingGate> kvp in boardinggateDictionary)
         {
-            if (kvp.Key == BoardinGate && kvp.Value.Flightt != null)
+            if (kvp.Key == BoardinGate && kvp.Value.Flights != null)
             {
                 Console.WriteLine("Boarding Gate is already assigned.");
                 break;
             }
-            else if (kvp.Key == BoardinGate && kvp.Value.Flightt == null)
+            else if (kvp.Key == BoardinGate && kvp.Value.Flights == null)
             {
-                boardinggateDictionary[kvp.Key].Flightt = flighdict[Flighnum];
+                boardinggateDictionary[kvp.Key].Flights = flighdict[Flighnum];
                 loopt = false;
                 break;
             }
@@ -92,8 +90,9 @@ string AssignFligh2BoardG(Dictionary<String, Flight> flighdict, Dictionary<strin
     }
     return BoardinGate;
 
-}
-void AssignFlighStatus(Dictionary<String, Flight> flighdict, string Flighnum,Dictionary<String, BoardingGate> boardinggatedictionary,string BoardinGate)
+}    //modifies BoardinGate Dict and has info on boarding gate for each fligh i think
+
+void AssignFlighStatus(Dictionary<String, Flight> flighdict, string Flighnum, Dictionary<String, BoardingGate> boardinggatedictionary, string BoardinGate)
 {
     string statopt = "";
     while (true)
@@ -120,27 +119,33 @@ void AssignFlighStatus(Dictionary<String, Flight> flighdict, string Flighnum,Dic
 
         if (status == "1")
         {
-            flighdict[Flighnum].Status = "Delayed";        
+            flighdict[Flighnum].Status = "Delayed";
         }
         else if (status == "2")
         {
             flighdict[Flighnum].Status = "Boarding";
         }
         else { flighdict[Flighnum].Status = "On Time"; }
-        boardinggateDictionary[BoardinGate].Flightt = flighdict[Flighnum];
+        boardinggateDictionary[BoardinGate].Flights = flighdict[Flighnum];
     }
     Console.WriteLine($"Flight {Flighnum} has been assigned to Gate {BoardinGate}");
 }
 
-
-string Flighnum = "";
-while (true)
+void Fligh2BoarWStatus(Dictionary<String, Flight> flighdict, Dictionary<String, BoardingGate> boardinggatedictionary)
 {
-    Console.WriteLine("Enter Flight Number: ");
-    Flighnum = Console.ReadLine();
-    if (checkflighnum(flighdict, Flighnum) == true) { break; }
-    else { continue; }
+    string Flighnum = "";
+    while (true)
+    {
+        Console.WriteLine("Enter Flight Number: ");
+        Flighnum = Console.ReadLine();
+        if (checkflighnum(flighdict, Flighnum) == true) { break; }
+        else { continue; }
+    }
+    OneFlightInfo(flighdict, airlinesDictionary, Flighnum);
+    string boardinNum = AssignFligh2BoardG(flighdict, boardinggateDictionary, Flighnum);
+    AssignFlighStatus(flighdict, Flighnum, boardinggateDictionary, boardinNum);
+
+
 }
-OneFlightInfo(flighdict, airlinesDictionary, Flighnum);
-string boardinNum = AssignFligh2BoardG(flighdict, boardinggateDictionary, Flighnum);
-AssignFlighStatus(flighdict, Flighnum, boardinggateDictionary,boardinNum);
+
+//Fligh2BoarWStatus(T5.Flights, T5.BoardingGates);
