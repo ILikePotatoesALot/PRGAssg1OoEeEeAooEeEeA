@@ -1,7 +1,7 @@
 
 namespace AssgCode
 {
-    internal class BoardingGate : Terminal
+    internal class BoardingGate
     {
         public string GateName { get; set; }
 
