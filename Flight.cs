@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace AssgCode
 {
-namespace AssgCode
-{
     internal class Flight : IComparable<Flight>
     {
         public string FlightNumber { get; set; }
