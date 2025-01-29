@@ -1,0 +1,119 @@
+//Advance Q2 Seth
+void CheckBGFlights()
+{
+    int count = 0;
+    int total = flighdict.Count;
+    foreach (string bg in boardinggateDictionary.Keys)
+    {
+        if (boardinggateDictionary[bg].Flights != null)
+        {
+            count += 1;
+        }
+    }
+    if (count != total)
+    {
+        Console.WriteLine("Please ensure all flights are assigned a boarding gate.");
+    }
+}
+
+static double Discounts(Airline airline)
+{
+    //Discount 1
+    double numflight = airline.Flights.Count();
+    double firstdisc = (Math.Floor(numflight / Convert.ToDouble(3))) * 350;
+    //Discount 2
+    double seconddisc = 0;
+    double thirddisc = 0;
+    double fourthdisc = 0;
+    foreach (Flight flight in airline.Flights.Values)
+    {
+        if (flight.ExpectedTime.Hour < 11 || flight.ExpectedTime.Hour >= 21)
+        {
+            seconddisc += 110;
+        }
+        //Discount 3
+        if (flight.Origin == "Dubai (DXB)" || flight.Origin == "Bangkok (BKK)" || flight.Origin == "Tokyo (NRT)")
+        {
+            thirddisc += 25;
+        }
+        if (flight is NORMFlight)
+        {
+            fourthdisc += 50;
+        }
+    }
+    double TotalDiscount = firstdisc + seconddisc + thirddisc + fourthdisc;
+    return TotalDiscount;
+}
+
+
+
+
+
+
+
+static (double total, double totalFee) CalculateTotal(Airline airline)
+{
+    double total = 0;
+    double totalfee = 0;
+    foreach (Flight fl in airline.Flights.Values)
+    {
+        if (fl is CFFTFlight)
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 150;
+            totalfee += gatefee;
+        }
+        else if (fl is DDJBFlight)
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 300;
+            totalfee += gatefee;
+        }
+        else if (fl is LWTTFlight)
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 500;
+            totalfee += gatefee;
+        }
+        else
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 0;
+            totalfee += gatefee;
+        }
+    }
+    return (total, totalfee);
+}
+
+void DisplayFees()
+{
+    double totalamt = 0;
+    double totaldisc = 0;
+    foreach (Airline airline in airlinesDictionary.Values)
+    {
+        (double total, double totalfees) = CalculateTotal(airline);
+        double discount = Discounts(airline);
+        if (airline.Flights.Values.Count > 5)
+        {
+            double fifthdisc = total * 0.03;
+            discount += fifthdisc;
+        }
+        Console.WriteLine(airline.Name);
+        Console.WriteLine("Total Fees: " + (total - discount));
+        Console.WriteLine("Initial Subtotal Fees: " + (total));
+        Console.WriteLine("Total Discount: " + (discount));
+        Console.WriteLine("=============================================");
+        totalamt += total;
+        totaldisc += discount;
+    }
+    Console.WriteLine("Total Subtotal Fees: " + totalamt);
+    Console.WriteLine("Total Discounts: " + totaldisc);
+    Console.WriteLine("Total Final Fees: " + (totalamt - totaldisc));
+    Console.WriteLine($"Percentage of Discounts: {(totaldisc / totalamt) * 100:F2}%");
+
+}
+
