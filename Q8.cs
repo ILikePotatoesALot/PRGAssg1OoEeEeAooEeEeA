@@ -126,12 +126,9 @@ void ModifyFlight()
         string choose = Console.ReadLine();
         if (choose.ToUpper() == "Y")
         {
-            flighdict.Remove(i);
+            Airline airline = T5.GetAirlineFromFlight(flighdict[i]);
+            airline.RemoveFlight(flighdict[i]);
         }
 
     }
 }
-
-    }
-}
-
