@@ -29,7 +29,10 @@ using (StreamReader sr = new StreamReader("airlines.csv"))
         Airline airline = new Airline(columns[0], columns[1]);
         airlinesDictionary[columns[1]] = airline;
     }
+
 }
+Console.WriteLine("Loading Airlines...");
+Console.WriteLine($"{airlinesDictionary.Count()} Airlines Loaded!");
 
 using (StreamReader sr = new StreamReader("boardinggates.csv"))
 {
@@ -41,14 +44,18 @@ using (StreamReader sr = new StreamReader("boardinggates.csv"))
 
         BoardingGate boardinggate = new BoardingGate(columns[0], Convert.ToBoolean(columns[1]), Convert.ToBoolean(columns[2]), Convert.ToBoolean(columns[3]));
         boardinggateDictionary[columns[0]] = boardinggate;
+
     }
 }
+Console.WriteLine("Loading Boarding Gates...");
+Console.WriteLine($"{boardinggateDictionary.Count()} Boarding Gates Loaded!");
 
 //Q2)
 
 Dictionary<String, Flight> ReadFligh()
 {
     Dictionary<String, Flight> flighdict = new Dictionary<String, Flight>();
+    int count = 0;
     using (StreamReader sr = new StreamReader("flights.csv"))
     {
         string? data = sr.ReadLine();
@@ -63,6 +70,7 @@ Dictionary<String, Flight> ReadFligh()
             string[] Objdata = tempdata.Split(",");
             string aircode = Objdata[0].Substring(0, 2);
             Airline airline = airlinesDictionary[aircode];
+            count++;
             if (Objdata[4] == "CFFT")
             {
                 CFFTFlight flightt = new CFFTFlight(Objdata[0], Objdata[1], Objdata[2], Convert.ToDateTime(Objdata[3]));
@@ -87,12 +95,18 @@ Dictionary<String, Flight> ReadFligh()
                 flighdict[Objdata[0]] = flightt;
                 airline.Flights[Objdata[0]] = flightt;
             }
-
         }
+        Console.WriteLine("Loading Flights...");
+        Console.WriteLine($"{count} Flights Loaded!");
+       
+
     }
     return flighdict;
 }
+
 Dictionary<String, Flight> flighdict = ReadFligh();
+
+
 Terminal T5 = new Terminal("Terminal 5", airlinesDictionary, flighdict, boardinggateDictionary);
 
 //3 List all Flights with their basic info
@@ -644,7 +658,8 @@ void ModifyFlight()
         string choose = Console.ReadLine();
         if (choose.ToUpper() == "Y")
         {
-            flighdict.Remove(i);
+            Airline airline = T5.GetAirlineFromFlight(flighdict[i]);
+            airline.RemoveFlight(flighdict[i]);
         }
 
     }
@@ -685,3 +700,203 @@ void SortedFlightInfo(Dictionary<String, Flight> flighdict, Dictionary<string, A
 }
 
 //SortedFlightInfo(T5.Flights, T5.Airlines, T5.BoardingGates);
+
+//Advance Q1 Austin
+void Bg2FlighAdvFeature(string flighcode, Dictionary<string, BoardingGate> boardinggateDictionary, Dictionary<String, List<BoardingGate>> UnAssgBoardingGates, Flight UnassgFlight)
+{
+    foreach (BoardingGate Bgs in UnAssgBoardingGates[flighcode])
+    {
+        if (Bgs.Flights != null)
+        {
+            Console.WriteLine("Boarding Gate is already assigned.");
+        }
+        else if (Bgs.Flights == null)
+        {
+            boardinggateDictionary[Bgs.GateName].Flights = UnassgFlight;
+            break;
+        }
+    }
+}
+
+
+
+void BulkAssignFligh2BoardG(Dictionary<String, Flight> flighdict, Dictionary<string, BoardingGate> boardinggateDictionary)
+{
+    Queue<Flight> UnassignedFlights = new Queue<Flight>();
+    int UnassgBGCounter = 0;
+    List<Flight> AssignedFlights = new List<Flight>();
+    foreach (KeyValuePair<String, BoardingGate> kv in boardinggateDictionary)
+    {
+        if (kv.Value.Flights != null) { AssignedFlights.Add(kv.Value.Flights); }
+        else { UnassgBGCounter += 1; }
+    }
+    foreach (KeyValuePair<String, Flight> fd in flighdict)
+    {
+        if (!AssignedFlights.Contains(fd.Value)) { UnassignedFlights.Enqueue(fd.Value); }
+    }
+    Console.WriteLine($"{UnassignedFlights.Count()} Flights Are Not Assigned To A Boarding Gate. ");
+    Console.WriteLine($"{UnassgBGCounter} Boarding Gates Do Not have a flight Number Assigned. ");
+
+    // AssgCode.DDJBFlight
+    // UnassignedFlights.Dequeue();
+    //make a dict of {statuscode:Flights}
+
+
+    foreach (Flight fligh in UnassignedFlights)
+    {
+        string flighcode = fligh.GetType().ToString();
+        if (flighcode.Substring(flighcode.Length - 10) == "DDJBFlight") { flighcode = "DDJB"; }
+        else if (flighcode.Substring(flighcode.Length - 10) == "CFFTFlight") { flighcode = "CFFT"; }
+        else if (flighcode.Substring(flighcode.Length - 10) == "LWTTFlight") { flighcode = "LWTT"; }
+        else { flighcode = "None"; }
+
+        Dictionary<String, List<BoardingGate>> UnAssgBoardingGates = new Dictionary<String, List<BoardingGate>>(); // Code : List of BoardingGates under that Code
+        List<BoardingGate> Nonelis = new List<BoardingGate>();
+        List<BoardingGate> CFFTlis = new List<BoardingGate>();
+        List<BoardingGate> DDJBlis = new List<BoardingGate>();
+        List<BoardingGate> LWTTlis = new List<BoardingGate>();
+        foreach (KeyValuePair<String, BoardingGate> Bgs in boardinggateDictionary)
+        {
+
+            if (Bgs.Value.SupportsCFFT == false && Bgs.Value.SupportsDDJB == false && Bgs.Value.SupportsLWTT == false)
+            {
+                Nonelis.Add(Bgs.Value);
+                UnAssgBoardingGates["None"] = Nonelis;
+            }
+            if (Bgs.Value.SupportsCFFT == true) { CFFTlis.Add(Bgs.Value); UnAssgBoardingGates["CFFT"] = CFFTlis; }
+            if (Bgs.Value.SupportsDDJB == true) { DDJBlis.Add(Bgs.Value); UnAssgBoardingGates["DDJB"] = DDJBlis; }
+            if (Bgs.Value.SupportsLWTT == true) { LWTTlis.Add(Bgs.Value); UnAssgBoardingGates["LWTT"] = LWTTlis; }
+        }
+
+        Bg2FlighAdvFeature(flighcode, boardinggateDictionary, UnAssgBoardingGates, fligh);
+
+    }
+
+}
+
+
+
+
+//BulkAssignFligh2BoardG(T5.Flights, T5.BoardingGates);
+
+//SortedFlightInfo(T5.Flights, T5.Airlines, T5.BoardingGates);
+
+//Advance Q2 Seth
+void CheckBGFlights()
+{
+    int count = 0;
+    int total = flighdict.Count;
+    foreach (string bg in boardinggateDictionary.Keys)
+    {
+        if (boardinggateDictionary[bg].Flights != null)
+        {
+            count += 1;
+        }
+    }
+    if (count != total)
+    {
+        Console.WriteLine("Please ensure all flights are assigned a boarding gate.");
+    }
+}
+
+static double Discounts(Airline airline)
+{
+    //Discount 1
+    double numflight = airline.Flights.Count();
+    double firstdisc = (Math.Floor(numflight / Convert.ToDouble(3))) * 350;
+    //Discount 2
+    double seconddisc = 0;
+    double thirddisc = 0;
+    double fourthdisc = 0;
+    foreach (Flight flight in airline.Flights.Values)
+    {
+        if (flight.ExpectedTime.Hour < 11 || flight.ExpectedTime.Hour >= 21)
+        {
+            seconddisc += 110;
+        }
+        //Discount 3
+        if (flight.Origin == "Dubai (DXB)" || flight.Origin == "Bangkok (BKK)" || flight.Origin == "Tokyo (NRT)")
+        {
+            thirddisc += 25;
+        }
+        if (flight is NORMFlight)
+        {
+            fourthdisc += 50;
+        }
+    }
+    double TotalDiscount = firstdisc + seconddisc + thirddisc + fourthdisc;
+    return TotalDiscount;
+}
+
+
+
+
+
+
+
+static (double total, double totalFee) CalculateTotal(Airline airline)
+{
+    double total = 0;
+    double totalfee = 0;
+    foreach (Flight fl in airline.Flights.Values)
+    {
+        if (fl is CFFTFlight)
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 150;
+            totalfee += gatefee;
+        }
+        else if (fl is DDJBFlight)
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 300;
+            totalfee += gatefee;
+        }
+        else if (fl is LWTTFlight)
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 500;
+            totalfee += gatefee;
+        }
+        else
+        {
+            double inniamt = fl.CalculateFees();
+            total += inniamt;
+            double gatefee = 0;
+            totalfee += gatefee;
+        }
+    }
+    return (total, totalfee);
+}
+
+void DisplayFees()
+{
+    double totalamt = 0;
+    double totaldisc = 0;
+    foreach (Airline airline in airlinesDictionary.Values)
+    {
+        (double total, double totalfees) = CalculateTotal(airline);
+        double discount = Discounts(airline);
+        if (airline.Flights.Values.Count > 5)
+        {
+            double fifthdisc = total * 0.03;
+            discount += fifthdisc;
+        }
+        Console.WriteLine(airline.Name);
+        Console.WriteLine("Total Fees: " + (total - discount));
+        Console.WriteLine("Initial Subtotal Fees: " + (total));
+        Console.WriteLine("Total Discount: " + (discount));
+        Console.WriteLine("=============================================");
+        totalamt += total;
+        totaldisc += discount;
+    }
+    Console.WriteLine("Total Subtotal Fees: " + totalamt);
+    Console.WriteLine("Total Discounts: " + totaldisc);
+    Console.WriteLine("Total Final Fees: " + (totalamt - totaldisc));
+    Console.WriteLine($"Percentage of Discounts: {(totaldisc / totalamt) * 100:F2}%");
+
+}
+
