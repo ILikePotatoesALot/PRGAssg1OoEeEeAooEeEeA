@@ -1,83 +1,62 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AssgCode
 {
-    internal class Terminal
+    internal class Flight : IComparable<Flight>
     {
-        public string TerminalName { get; set; }
-        public Dictionary<string, Airline> Airlines { get; set; } = new Dictionary<string, Airline>();
-        public Dictionary<string, Flight> Flights { get; set; } = new Dictionary<string, Flight>();
-        public Dictionary<string, BoardingGate> BoardingGates { get; set; } = new Dictionary<string, BoardingGate>();
-        public Dictionary<string, double> GateFees { get; set; } = new Dictionary<string, double>();
+        public string FlightNumber { get; set; }
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+        public DateTime ExpectedTime { get; set; }
+        public string Status { get; set; }
 
-        public Terminal(string terminalName, Dictionary<string, Airline> airlines, Dictionary<string, Flight> flights, Dictionary<string, BoardingGate> boardingGates)
+        public Flight(string flightNumber, string origin, string destination, DateTime expectedTime)
         {
-            TerminalName = terminalName;
-            Airlines = airlines;
-            Flights = flights;
-            BoardingGates = boardingGates;
+            FlightNumber = flightNumber;
+            Origin = origin;
+            Destination = destination;
+            ExpectedTime = expectedTime;
+            Status = "On Time";
         }
 
 
-        public bool AddAirline(Airline airline)
+        public Flight(string flightNumber, string origin, string destination, DateTime expectedTime, string status)
         {
-            try
-            {
-                Airlines.Add(airline.Code, airline);
-                return true;
-            }
-            catch
-            {
-                Console.WriteLine("Airline Addition Unsuccessful. Do try again. ");
-                return false;
-            }
-
-        }
-        public bool AddBoardingGate(BoardingGate boardingGate)
-        {
-            try
-            {
-                BoardingGates.Add(boardingGate.GateName, boardingGate);
-                return true;
-            }
-            catch
-            {
-                Console.WriteLine("Boarding Gate Addition Unsuccessful. Do try again. ");
-                return false;
-            }
+            FlightNumber = flightNumber;
+            Origin = origin;
+            Destination = destination;
+            ExpectedTime = expectedTime;
+            Status = status;
         }
 
-        public Airline GetAirlineFromFlight(Flight flight)
+        public virtual double CalculateFees()
         {
-            //Airline dict -> airline -> flight dict -> flights
-            foreach (Airline airline in Airlines.Values)
-            {
-                foreach (Flight flights in airline.Flights.Values)
-                {
-                    if (flight == flights) { return airline; }
-                }
-            }
-            return null;
+            double fee = 300;
+            if (Destination == "Singapore (SIN)") { fee += 500; }
+            if (Origin == "Singapore (SIN)") { fee += 800; }
+            return fee;
         }
-
-
-        public void PrintAirlineFees(Dictionary<string, Airline> airlinesDictionary, Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> boardingGateDict, Airline ac)
-        {
-                
-                Airline.DisplayFees(airlinesDictionary, flightDict, boardingGateDict, ac);
-
-        }
-
-
-
 
         public virtual string ToString()
         {
-            return $"terminal name: {TerminalName}  gateFees: {GateFees} ";
+            return $"Flight Number: {FlightNumber,-10}" +
+                $"Origin: {Origin,-10}" +
+                $"Destination: {Destination,-10}" +
+                $"Expected Time: {ExpectedTime,-10}" +
+                $"Status: {Status,-10}";
+        }
+
+        public int CompareTo(Flight other)
+        {
+            if (other == null)
+                return 1;
+
+            return this.ExpectedTime.CompareTo(other.ExpectedTime);
         }
     }
 }
