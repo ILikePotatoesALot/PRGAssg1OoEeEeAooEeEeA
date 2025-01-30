@@ -1075,7 +1075,18 @@ void FlightSearching(Dictionary<string, Flight> FD)
 }
 
 
+void SortFlightsByStatus(Dictionary<String,Flight> flightdict)
+{
+    List<Flight> flights = flightdict.Values.ToList();
+    var sortedFlights = flights.OrderBy(f => f.Status).ToList();
 
+    // Display the sorted flights
+    Console.WriteLine("Sorted Flights by Status:");
+    foreach (var flight in sortedFlights)
+    {
+        Console.WriteLine($"{flight.FlightNumber} - {flight.Status} - {flight.ExpectedTime:yyyy-MM-dd HH:mm}");
+    }
+}
 
 
 void Final()
@@ -1083,7 +1094,7 @@ void Final()
     Dictionary<string, Flight> FDictionary = ReadFligh();
     Terminal T5 = new Terminal("Terminal 5", ADictionary, FDictionary, BGDictionary);
 
-    List<string> AllowableInputs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9","10", "0" };
+    List<string> AllowableInputs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9","10","11" ,"0" };
 
     while (true)
     {
@@ -1101,6 +1112,7 @@ void Final()
         Console.WriteLine("8. Process All Unassigned Flights To Boarding Gates In Bulk");
         Console.WriteLine("9. Display Total Fee Per Airline For The Day");
         Console.WriteLine("10. Flight Searching");
+        Console.WriteLine("11. Sort Flights By Status");
         Console.WriteLine("0. Exit");
         Console.Write("Please select your option: ");
 
@@ -1145,6 +1157,9 @@ void Final()
             case "10":
                 FlightSearching(FDictionary);
                 break;
+            case "11":
+                SortFlightsByStatus(T5.Flights);
+                break;
             case "0":
                 Console.WriteLine("Goodbye!");
                 return;  // Exits the function, stopping the loop
@@ -1160,5 +1175,4 @@ void Final()
 Final();
 
 
-CreateNewFlight(T5.Flights, T5.Airlines);
 
