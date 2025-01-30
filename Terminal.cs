@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,7 @@ namespace AssgCode
         public Dictionary<string, BoardingGate> BoardingGates { get; set; } = new Dictionary<string, BoardingGate>();
         public Dictionary<string, double> GateFees { get; set; } = new Dictionary<string, double>();
 
-        public Terminal(string terminalName,Dictionary<string,Airline> airlines, Dictionary<string, Flight> flights, Dictionary<string, BoardingGate> boardingGates)
+        public Terminal(string terminalName, Dictionary<string, Airline> airlines, Dictionary<string, Flight> flights, Dictionary<string, BoardingGate> boardingGates)
         {
             TerminalName = terminalName;
             Airlines = airlines;
@@ -50,7 +50,7 @@ namespace AssgCode
                 return false;
             }
         }
-        
+
         public Airline GetAirlineFromFlight(Flight flight)
         {
             //Airline dict -> airline -> flight dict -> flights
@@ -63,18 +63,21 @@ namespace AssgCode
             }
             return null;
         }
-        
-        /*
-        public void PrintAirlineFees()
+
+
+        public void PrintAirlineFees(Dictionary<string, Airline> airlinesDictionary, Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> boardingGateDict, Airline ac)
         {
-            
+                
+                Airline.DisplayFees(airlinesDictionary, flightDict, boardingGateDict, ac);
+
         }
-        
-        */
+
+
+
+
         public virtual string ToString()
         {
             return $"terminal name: {TerminalName}  gateFees: {GateFees} ";
         }
     }
 }
-
