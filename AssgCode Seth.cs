@@ -1086,13 +1086,10 @@ void Final()
                 SortedFlightInfo(T5.Flights, T5.Airlines, T5.BoardingGates);
                 break;
             case "8":
-                //AUSTIN HERE
+                BulkAssignFligh2BoardG(FDictionary, BGDictionary);
                 break;
             case "9":
-                foreach (Airline airline in T5.Airlines.Values)
-                {
-                    T5.PrintAirlineFees(ADictionary, FDictionary, BGDictionary, airline);
-                }
+                    T5.PrintAirlineFees(ADictionary, FDictionary, BGDictionary);
                 break;
             case "0":
                 Console.WriteLine("Goodbye!");
