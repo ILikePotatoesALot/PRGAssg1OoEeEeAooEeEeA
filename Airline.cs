@@ -136,8 +136,12 @@ namespace AssgCode
             return (total, totalFee);
         }
 
-        public static void DisplayFees(Dictionary<string, Airline> airlinesDictionary, Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> boardingGateDict, Airline airline)
+        public static void DisplayFees(Dictionary<string, Airline> airlinesDictionary, Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> boardingGateDict)
         {
+            // Variables to accumulate totals for all airlines
+            double totalAmountAllAirlines = 0;
+            double totalDiscountAllAirlines = 0;
+
             // Check if all flights are assigned to boarding gates
             if (!CheckBGFlights(flightDict, boardingGateDict))
             {
@@ -158,34 +162,38 @@ namespace AssgCode
                 return;  // Exit the method after printing the error
             }
 
-            // If all flights are assigned, proceed with fee calculation
-            double totalAmount = 0, totalDiscount = 0;
+            // Process each airline
+            foreach (var airline in airlinesDictionary.Values)
+            {
+                Console.WriteLine("========== Airline Fees Breakdown ==========");
 
-            Console.WriteLine("========== Airline Fees Breakdown ==========");
+                (double total, double totalFees) = CalculateTotal(airline);
+                double discount = Discounts(airline);
 
-            (double total, double totalFees) = CalculateTotal(airline);
-            double discount = Discounts(airline);
+                if (airline.Flights.Count > 5)
+                    discount += total * 0.03;
 
-            if (airline.Flights.Count > 5)
-                discount += total * 0.03;
+                double finalFee = total - discount;
 
-            double finalFee = total - discount;
+                Console.WriteLine($"Airline: {airline.Name}");
+                Console.WriteLine($"  Total Fees: ${finalFee:F2}");
+                Console.WriteLine($"  Initial Subtotal Fees: ${total:F2}");
+                Console.WriteLine($"  Total Discount: ${discount:F2}");
+                Console.WriteLine("=============================================");
 
-            Console.WriteLine($"Airline: {airline.Name}");
-            Console.WriteLine($"  Total Fees: ${finalFee:F2}");
-            Console.WriteLine($"  Initial Subtotal Fees: ${total:F2}");
-            Console.WriteLine($"  Total Discount: ${discount:F2}");
-            Console.WriteLine("=============================================");
+                // Accumulate totals for all airlines
+                totalAmountAllAirlines += total;
+                totalDiscountAllAirlines += discount;
+            }
 
-            totalAmount += total;
-            totalDiscount += discount;
-
-            Console.WriteLine("\n========== Summary ==========");
-            Console.WriteLine($"Total Subtotal Fees: ${totalAmount:F2}");
-            Console.WriteLine($"Total Discounts: ${totalDiscount:F2}");
-            Console.WriteLine($"Total Final Fees: ${(totalAmount - totalDiscount):F2}");
-            Console.WriteLine($"Percentage of Discounts: {(totalDiscount / totalAmount) * 100:F2}%");
+            // Display the summary for all airlines
+            Console.WriteLine("\n========== Summary for All Airlines ==========");
+            Console.WriteLine($"Total Subtotal Fees: ${totalAmountAllAirlines:F2}");
+            Console.WriteLine($"Total Discounts: ${totalDiscountAllAirlines:F2}");
+            Console.WriteLine($"Total Final Fees: ${(totalAmountAllAirlines - totalDiscountAllAirlines):F2}");
+            Console.WriteLine($"Percentage of Discounts: {(totalDiscountAllAirlines / totalAmountAllAirlines) * 100:F2}%");
         }
+
 
         public override string ToString()
         {
