@@ -1075,16 +1075,18 @@ void FlightSearching(Dictionary<string, Flight> FD)
 }
 
 
-void SortFlightsByStatus(Dictionary<String,Flight> flightdict)
+void SortFlightsByStatus(Dictionary<string, Flight> flightDict)
 {
-    List<Flight> flights = flightdict.Values.ToList();
-    var sortedFlights = flights.OrderBy(f => f.Status).ToList();
+    // Sort the dictionary by the 'Status' property of the flight values
+    var sortedFlights = flightDict.OrderBy(f => f.Value.Status) // Sorting by the Status property of Flight
+                                 .ToList();
 
-    // Display the sorted flights
-    Console.WriteLine("Sorted Flights by Status:");
+    Console.WriteLine("\nSorted Flights by Status:");
+
+    // Iterate through the sorted dictionary and print out the flights and their statuses
     foreach (var flight in sortedFlights)
     {
-        Console.WriteLine($"{flight.FlightNumber} - {flight.Status} - {flight.ExpectedTime:yyyy-MM-dd HH:mm}");
+        Console.WriteLine($"Flight {flight.Value.FlightNumber} - Status: {flight.Value.Status}");
     }
 }
 
