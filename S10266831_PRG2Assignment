@@ -106,11 +106,12 @@ Dictionary<String, Flight> ReadFligh()
     }
     return flighdict;
 }
+/*
 Dictionary<string, Flight> flighdict = ReadFligh();
 Console.WriteLine("Loading Flights...");
 Console.WriteLine($"{flighdict.Count} Flights Loaded!");
 
-
+*/
 //3 List all Flights with their basic info Austin
 
 void AllFlightBasicInfo(Dictionary<String, Flight> flighdict, Dictionary<string, Airline> airlinesDictionary)
@@ -154,13 +155,13 @@ void DisplayBG(Dictionary<String, BoardingGate> BoardinGateDict)
 
 bool checkflighnum(Dictionary<String, Flight> flighdict, string FlightNumber)
 {
-    if (flighdict.ContainsKey(FlightNumber)) { return true; }
+    if (flighdict.ContainsKey(FlightNumber.ToUpper())) { return true; }
     else { Console.WriteLine("Flight Number Not Found. "); return false; }    //shortcuts for validation later on
 }
 
 bool checkBoardinGate(Dictionary<String, BoardingGate> boardinggateDictionary, string BoardingGate)
 {
-    if (boardinggateDictionary.ContainsKey(BoardingGate)) { return true; }
+    if (boardinggateDictionary.ContainsKey(BoardingGate.ToUpper())) { return true; }
     else { Console.WriteLine("Boarding Gate Not Found. "); return false; }
 }
 
@@ -252,7 +253,7 @@ void AssignFlighStatus(Dictionary<String, Flight> flighdict, string Flighnum, Di
     {
         Console.WriteLine("Would you like to update the status of the flight? (Y/N)");
         statopt = Console.ReadLine();
-        if (statopt != "Y" && statopt != "N") { Console.WriteLine("Invalid Response. Try Again."); }
+        if (statopt.ToUpper() != "Y" && statopt.ToUpper() != "N") { Console.WriteLine("Invalid Response. Try Again."); }
         else { break; }
     }
 
@@ -314,10 +315,11 @@ void CreateNewFlight(Dictionary<String, Flight> flighdict, Dictionary<string, Ai
             List<string> allowedAirlines = airlinesDictionary.Keys.ToList();
             List<string> CurrentFlighNums = flighdict.Keys.ToList(); // Example dictionary of existing strings
             Console.Write("Enter Flight Number: ");
-            NewFlighNum = Console.ReadLine();
+            NewFlighNum = Console.ReadLine().ToUpper();
 
             string pattern = @"^[A-Za-z]{2} [0-9]{3}$";
             if (Regex.IsMatch(NewFlighNum, pattern))
+
             {
                 string prefix = NewFlighNum.Substring(0, 2);    //taking out firs 2 letters (SQ)
 
@@ -389,14 +391,21 @@ void CreateNewFlight(Dictionary<String, Flight> flighdict, Dictionary<string, Ai
             String NewdepartureArrivalTime = Console.ReadLine();
             if (DateTime.TryParse(NewdepartureArrivalTime, out NewFormattedDATime))
             {
-                break;
+                if (NewFormattedDATime.Year >= 2025)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Expected Departure/Arrival Time.");
+                }
             }
             else
             {
                 Console.WriteLine("Invalid Expected Departure/Arrival Time.");
             }
-
         }
+
         // Validate Special Request Code
 
         List<string> validRequestCodes = new List<string> { "CFFT", "DDJB", "LWTT", "None" };
@@ -406,7 +415,7 @@ void CreateNewFlight(Dictionary<String, Flight> flighdict, Dictionary<string, Ai
         {
             Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
             SRC = Console.ReadLine();
-            if (validRequestCodes.Contains(SRC))
+            if (validRequestCodes.Contains(SRC.ToUpper()))
             {
                 break;
             }
@@ -443,7 +452,7 @@ void CreateNewFlight(Dictionary<String, Flight> flighdict, Dictionary<string, Ai
         while (true)
         {
             Console.WriteLine("Would you like to add another flight? (Y/N)");
-            Anotherfligh = Console.ReadLine();
+            Anotherfligh = Console.ReadLine().ToUpper();
             if (Anotherfligh != "Y" && Anotherfligh != "N")
             {
                 Console.WriteLine("Invalid Input, Try Again. ");
@@ -501,7 +510,7 @@ void FullAirlineFlightDetails(Dictionary<String, Flight> flighdict, Dictionary<S
     while (true)
     {
         Console.Write("Enter Airline Code: ");
-        airCode = Console.ReadLine();
+        airCode = Console.ReadLine().ToUpper();
 
         if (CheckAirline(airlinesdictionary, airCode))
         {
@@ -1095,6 +1104,8 @@ void SortFlightsByStatus(Dictionary<string, Flight> flightDict)
 void Final()
 {
     Dictionary<string, Flight> FDictionary = ReadFligh();
+    Console.WriteLine("Loading Flights...");
+    Console.WriteLine($"{FDictionary.Count} Flights Loaded!");
     Terminal T5 = new Terminal("Terminal 5", ADictionary, FDictionary, BGDictionary);
 
     List<string> AllowableInputs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "0" };
