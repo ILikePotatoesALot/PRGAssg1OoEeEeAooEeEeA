@@ -1,3 +1,15 @@
+
+
+
+//==========================================================
+//Student Number : S10266831
+//Student Name : Austin Goh
+//Partner Name : Seth Lee
+//==========================================================
+
+
+
+
 namespace AssgCode
 {
     internal class BoardingGate
@@ -37,21 +49,20 @@ namespace AssgCode
                 return 500;
             }
             return 0;
-}
+        }
 
-                    
+
 
 
 
         public override string ToString()
         {
-            return $"GateName: {GateName,-10}" +
-                $"SupportsCFFT: {SupportsCFFT,-10}" +
-                $"SupportsDDJB: {SupportsDDJB,-10}" +
-                $"SupportsLWTT: {SupportsLWTT,-10}";
+                return $"{GateName,-15}" +
+                    $"{SupportsCFFT,-20}" +
+                    $"{SupportsDDJB,-20}" +
+                    $"{SupportsLWTT,-20}";
         }
 
 
     }
 }
-
