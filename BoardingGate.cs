@@ -22,17 +22,26 @@ namespace AssgCode
         }
 
 
-        /*public double CalculateFees()
+        public double CalculateFees()
         {
-            
-            if (SupportsCFFT == true) { fee += 150; }
-            if (SupportsDDJB == true) { fee += 300; }
-            if (SupportsLWTT == true) {fee += 500; }
-            
-            return fee;
-            
+            if (Flights is CFFTFlight)
+            {
+                return 150;
+            }
+            else if (Flights is DDJBFlight)
+            {
+                return 300;
+            }
+            else if (Flights is LWTTFlight)
+            {
+                return 500;
+            }
+            return 0;
+}
 
-        }*/
+                    
+
+
 
         public override string ToString()
         {
