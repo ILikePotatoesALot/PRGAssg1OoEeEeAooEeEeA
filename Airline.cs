@@ -113,7 +113,7 @@ namespace AssgCode
             return firstDisc + secondDisc + thirdDisc + fourthDisc;
         }
 
-        public static (double total, double totalFee) CalculateTotal(Airline airline)
+        public static (double total, double totalFee) CalculateTotal(Airline airline, Dictionary<string, BoardingGate> BDict)
         {
             double total = 0, totalFee = 0;
 
@@ -121,15 +121,14 @@ namespace AssgCode
             {
                 double flightFee = fl.CalculateFees();
                 total += flightFee;
-
-                double gateFee = fl switch
+                double gateFee = 0;
+                foreach (BoardingGate gate in BDict.Values)
                 {
-                    CFFTFlight => 150,
-                    DDJBFlight => 300,
-                    LWTTFlight => 500,
-                    _ => 0
-                };
-
+                    if (gate.Flights == fl)
+                    {
+                        gateFee = gate.CalculateFees();
+                    }
+                }
                 totalFee += gateFee;
             }
 
@@ -167,7 +166,7 @@ namespace AssgCode
             {
                 Console.WriteLine("========== Airline Fees Breakdown ==========");
 
-                (double total, double totalFees) = CalculateTotal(airline);
+                (double total, double totalFees) = CalculateTotal(airline, boardingGateDict);
                 double discount = Discounts(airline);
 
                 if (airline.Flights.Count > 5)
